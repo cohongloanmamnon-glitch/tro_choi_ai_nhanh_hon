@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-width=1.0">
+    <title>Trò Chơi AI NHANH HƠN
+           Trần Hồng Loan         </title>
+    <style>
+   
+            body {
+            font-family: 'Arial', sans-serif;
+            margin: 0; 
+            padding: 0; 
+            text-align: center;
+            overflow: hidden; /* Ẩn thanh cuộn để màn hình game gọn gàng */
+            
+            /* --- CÁC DÒNG LÀM ẢNH NỀN FULL MÀN HÌNH --- */
+            background-image: url('nen.jpg');
+            background-size: cover; /* Lệnh "cover" giúp ảnh tự động phóng to lấp đầy 100% màn hình */
+            background-position: center center; /* Luôn giữ trọng tâm bức ảnh ở giữa */
+            background-repeat: no-repeat; /* Không bị lặp lại hình ảnh thành nhiều mảnh nhỏ */
+            background-attachment: fixed; /* Ghim chặt ảnh nền, không bị trượt đi */
+            
+            width: 100vw; /* Ép chiều rộng bằng đúng 100% màn hình hiển thị */
+            height: 100vh; /* Ép chiều cao bằng đúng 100% màn hình hiển thị */
+        
+        }
+
+        .overlay {
+            background-color: rgba(255, 255, 255, 0.85);
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 90%;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .screen { display: none; height: 100%; flex-direction: column; justify-content: center; align-items: center;}
+        .screen.active { display: flex; }
+.nguoi-thuc-hien {
+            font-size: 28px;
+            color: #008CBA;
+            font-weight: bold;
+            margin-bottom: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 30px;
+            border-radius: 20px;
+            display: inline-block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px dashed #008CBA;
+        }
+        h1 { color: #ff4500; font-size: 50px; text-shadow: 2px 2px #fffacd; }
+        .btn-play {
+            background-color: #ff4500; color: white; border: none; padding: 20px 40px;
+            font-size: 30px; font-weight: bold; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2); transition: transform 0.2s;
+        }
+        .btn-play:hover { transform: scale(1.1); }
+
+        .bai-ve { font-size: 24px; color: #333; margin-bottom: 10px; font-style: italic; }
+        
+        .hinh-minh-hoa { width: 250px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.2); margin-bottom: 15px; }
+        
+        .the-tu {
+            font-size: 40px; font-weight: bold; color: #fff; background: #008CBA;
+            padding: 10px 30px; border-radius: 15px; margin-bottom: 10px;
+            box-shadow: 0px 5px 10px rgba(0,0,0,0.2);
+        }
+
+        .dong-ho {
+            font-size: 40px; font-weight: bold; color: red;
+            background: #fff; border: 3px solid red; border-radius: 50%;
+            width: 60px; height: 60px; line-height: 55px; margin: 10px auto;
+        }
+
+        .dap-an-container { display: flex; justify-content: center; gap: 30px; margin-top: 10px; }
+
+        .ngoi-nha { position: relative; cursor: pointer; transition: transform 0.2s; width: 140px; }
+        .ngoi-nha:hover { transform: scale(1.1); }
+        .ngoi-nha img { width: 100%; border-radius: 15px; }
+        
+        .ngoi-nha span {
+            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
+            font-size: 35px; font-weight: bold; color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        
+        .anh-dap-an { 
+            width: 90px; height: 90px; object-fit: cover;
+            position: absolute; top: -40px; left: 50%; transform: translateX(-50%); 
+            border-radius: 15px; border: 3px solid white; box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+            background-color: white; z-index: 10;
+        }
+        .text-cau5 { 
+            position: absolute; top: 65%; left: 50%; transform: translate(-50%, -50%); 
+            font-size: 22px; font-weight: bold; color: white; text-shadow: 2px 2px 4px black; width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="nhacNen" src="nhac-nen.mp3" loop></audio>
+    <audio id="soundDung" src="clap.mp3"></audio>
+    <audio id="soundSai" src="wrong.mp3"></audio>
+    <audio id="soundVoTay" src="hoanho.wav"></audio>
+
+    <div class="overlay">
+        
+       <div id="menu" class="screen active">
+            <h1>TRÒ CHƠI: AI </h1>
+            <div class="nguoi-thuc-hien">Người thực hiện: Cô Trần Hồng Loan</div>
+            <button class="btn-play" onclick="batDau()">BẮT ĐẦU CHƠI</button>
+        </div>
+           
+
+        <div id="cau1" class="screen">
+            <div class="bai-ve">"Nghe vẻ nghe ve, nghe vè câu hỏi... Bé ơi bé đếm có mấy chữ g<br>Trong từ 'cái gương',"</div>
+            <img src="guong.png" class="hinh-minh-hoa" alt="Cái gương">
+            <div class="the-tu">CÁI GƯƠNG</div>
+            <div class="dong-ho" id="dh1">15</div>
+            <div class="dap-an-container">
+                <div class="ngoi-nha" onclick="kiemTra(1, false)"><img src="nha_A.png"><span>1</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(1, true)"><img src="nha_B.png"><span>2</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(1, false)"><img src="nha_C.png"><span>3</span></div>
+            </div>
+        </div>
+
+        <div id="cau2" class="screen">
+            <div class="bai-ve">"Nghe vẻ nghe ve, nghe vè câu hỏi... Bé ơi bé đếm có mấy chữ y<br>Trong từ 'máy bay',"</div>
+            <img src="maybay.png" class="hinh-minh-hoa" alt="Máy bay">
+            <div class="the-tu">MÁY BAY</div>
+            <div class="dong-ho" id="dh2">15</div>
+            <div class="dap-an-container">
+                <div class="ngoi-nha" onclick="kiemTra(2, false)"><img src="nha_A.png"><span>1</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(2, true)"><img src="nha_B.png"><span>2</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(2, false)"><img src="nha_C.png"><span>3</span></div>
+            </div>
+        </div>
+
+        <div id="cau3" class="screen">
+            <div class="bai-ve">"Chữ nào có nét cong tròn bên trái... Thêm nét móc dưới ở phía bên phải<br>Trong từ 'nhà ga',"</div>
+            <img src="nhaga.png" class="hinh-minh-hoa" alt="Nhà ga">
+            <div class="the-tu">NHÀ GA</div>
+            <div class="dong-ho" id="dh3">15</div>
+            <div class="dap-an-container">
+                <div class="ngoi-nha" onclick="kiemTra(3, true)"><img src="nha_A.png"><span>G</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(3, false)"><img src="nha_B.png"><span>Y</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(3, false)"><img src="nha_C.png"><span>A</span></div>
+            </div>
+        </div>
+
+        <div id="cau4" class="screen">
+            <div class="bai-ve">"Chữ nào có nét xiên ngắn bên trái... Thêm nét xiên dài ở phía bên phải<br>Trong từ 'cái ly',"</div>
+            <img src="caily.png" class="hinh-minh-hoa" alt="Cái ly">
+            <div class="the-tu">CÁI LY</div>
+            <div class="dong-ho" id="dh4">15</div>
+            <div class="dap-an-container">
+                <div class="ngoi-nha" onclick="kiemTra(4, false)"><img src="nha_A.png"><span>G</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(4, true)"><img src="nha_B.png"><span>Y</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(4, false)"><img src="nha_C.png"><span>L</span></div>
+            </div>
+        </div>
+
+       <div id="cau5" class="screen">
+            <div class="bai-ve">"Từ nào có cả chữ y chữ g<br>Trong các thẻ từ: viên gạch, xe máy, gà gáy... Từ nào, từ nào?"</div>
+            <div class="dong-ho" id="dh5">15</div>
+            
+            <div class="dap-an-container" style="margin-top: 50px;">
+                
+                <div class="ngoi-nha" onclick="kiemTra(5, false)">
+                    <img src="gach.png" class="anh-dap-an" alt="viên gạch">
+                    <img src="nha_A.png">
+                    <span class="text-cau5">viên gạch</span>
+                </div>
+                
+                <div class="ngoi-nha" onclick="kiemTra(5, false)">
+                    <img src="xemay.png" class="anh-dap-an" alt="Xe máy">
+                    <img src="nha_B.png">
+                    <span class="text-cau5">xe máy</span>
+                </div>
+                
+                <div class="ngoi-nha" onclick="kiemTra(5, true)">
+                    <img src="ga.png" class="anh-dap-an" alt="Gà gáy">
+                    <img src="nha_C.png">
+                    <span class="text-cau5">gà gáy</span>
+                </div>
+                
+            </div>
+        </div>
+
+        <div id="hoanthanh" class="screen">
+            <h1 style="font-size: 60px; color: #32CD32; text-shadow: 2px 2px white;">CHÚC MỪNG BÉ!</h1>
+            <img src="nen.png" style="width: 400px; border-radius: 20px; margin-top:20px; border: 5px solid #32CD32;">
+        </div>
+
+    </div>
+
+    <script>
+        let cauHienTai = 1;
+        let thoiGian = 15;
+        let dongHoChay;
+
+        function batDau() {
+            document.getElementById('menu').classList.remove('active');
+            chuyenCau(1);
+            
+            // Phát nhạc nền
+            let nhac = document.getElementById('nhacNen');
+            nhac.volume = 0.4; 
+            nhac.play().catch(e => console.log("Cần tương tác để phát nhạc"));
+        }
+
+        function chuyenCau(soCau) {
+            let screens = document.querySelectorAll('.screen');
+            screens.forEach(s => s.classList.remove('active'));
+
+            let cauMoi = document.getElementById('cau' + soCau);
+            if(cauMoi) {
+                cauMoi.classList.add('active');
+                batDauDemNguoc(soCau);
+            } else {
+                document.getElementById('hoanthanh').classList.add('active');
+                // Phát âm thanh hoàn thành (hoanho.wav)
+                document.getElementById('soundVoTay').play();
+            }
+        }
+
+        function batDauDemNguoc(soCau) {
+            thoiGian = 15;
+            document.getElementById('dh' + soCau).innerText = thoiGian;
+            clearInterval(dongHoChay);
+
+            dongHoChay = setInterval(function() {
+                thoiGian--;
+                document.getElementById('dh' + soCau).innerText = thoiGian;
+                if (thoiGian <= 0) {
+                    clearInterval(dongHoChay);
+                }
+            }, 1000);
+        }
+
+        function kiemTra(soCau, laDung) {
+            clearInterval(dongHoChay); 
+
+            if (laDung) {
+                // Phát âm thanh đúng (clap.mp3)
+                document.getElementById('soundDung').play();
+                
+                setTimeout(function() {
+                    cauHienTai++;
+                    chuyenCau(cauHienTai);
+                }, 1500); 
+            } else {
+                // Phát âm thanh sai (wrong.mp3)
+                document.getElementById('soundSai').play();
+            }
+        }
+    </script>
+</body>
+</html>
