@@ -7,7 +7,7 @@
     <style>
         /* --- CẤU TRÚC NỀN TẢNG --- */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Comic Sans MS', sans-serif;
             margin: 0; 
             padding: 0; 
             text-align: center;
@@ -41,7 +41,7 @@
             flex-direction: column; 
             justify-content: center; 
             align-items: center;
-            padding-right: 200px; 
+            padding-right: 250px; /* Tăng khoảng trống bên phải để chứa cả nhà và chữ */
             box-sizing: border-box;
             position: relative; 
         }
@@ -96,13 +96,36 @@
             width: 60px; height: 60px; line-height: 55px; margin: 10px auto;
         }
 
-        /* --- CÁC NGÔI NHÀ ĐÁP ÁN --- */
-        .ngoi-nha { position: relative; cursor: pointer; transition: transform 0.3s ease, opacity 0.5s ease; width: 140px; }
+        /* --- CÁC NGÔI NHÀ ĐÁP ÁN (ĐÃ CHỈNH SỬA ĐỂ CHỮ NẰM KỀ BÊN) --- */
+        .ngoi-nha { 
+            display: flex; /* Dùng Flexbox để xếp ngang ảnh và chữ */
+            align-items: center; /* Căn giữa chữ theo chiều dọc so với nhà */
+            justify-content: flex-start;
+            gap: 20px; /* Khoảng cách giữa hình ngôi nhà và chữ cái */
+            cursor: pointer; 
+            transition: transform 0.3s ease, opacity 0.5s ease; 
+        }
         .ngoi-nha:hover { transform: scale(1.1); }
-        .ngoi-nha img { width: 100%; border-radius: 15px; }
+        .ngoi-nha img { 
+            width: 140px; /* Cố định kích thước ảnh ngôi nhà */
+            border-radius: 15px; 
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        /* ĐÂY LÀ PHẦN CÔ CHỈNH SỬA FONT CHỮ VÀ KÍCH THƯỚC */
         .ngoi-nha span {
-            position: absolute; top: 60%; left: 50%; transform: translate(-50%, -50%);
-            font-size: 65px; font-weight: bold; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            position: static; /* Gỡ bỏ lớp đè lên ảnh cũ */
+            transform: none;
+            
+            /* --- CÔ SỬA Ở ĐÂY --- */
+            font-family: 'Comic Sans MS', cursive; /* Đổi font chữ (VD: 'Arial', 'Tahoma') */
+            font-size: 80px; /* Kích thước chữ (càng lớn chữ càng to) */
+            color: #ff4500; /* Màu chữ cái (màu đỏ cam) */
+            /* -------------------- */
+            
+            font-weight: bold; 
+            text-shadow: 3px 3px 0px white, 5px 5px 10px rgba(0,0,0,0.2); /* Tạo viền trắng và bóng mờ cho chữ dễ đọc */
+          
         }
 
         /* --- GIAO DIỆN MỚI CHO CÂU 5 --- */
@@ -120,8 +143,7 @@
         /* --- HIỆU ỨNG THỊ GIÁC --- */
         .hieu-ung-dung {
             transform: scale(1.2) !important;
-            box-shadow: 0 0 25px 10px #32CD32 !important; 
-            border-radius: 20px;
+            filter: drop-shadow(0 0 20px #32CD32); /* Hiệu ứng sáng viền cho cả nhà và chữ */
             z-index: 10;
         }
         .mo-dan { opacity: 0.2; pointer-events: none; transform: scale(0.8) !important; }
@@ -153,7 +175,7 @@
         }
         .btn-control:hover { transform: scale(1.1); background-color: #FFA500; }
 
-        /* --- THUẬT TOÁN TỰ ĐỘNG CĂN CHỈNH CHO ĐIỆN THOẠI / IPAD DỌC --- */
+        /* --- TỰ ĐỘNG CĂN CHỈNH ĐIỆN THOẠI / IPAD DỌC --- */
         @media (max-width: 900px) {
             .screen { padding-right: 0; padding-bottom: 80px; justify-content: flex-start; padding-top: 20px; }
             .dap-an-container { position: relative; right: auto; top: auto; transform: none; flex-direction: row; flex-wrap: wrap; justify-content: center; margin-top: 15px !important; gap: 15px; }
@@ -161,13 +183,15 @@
             .bai-ve { font-size: 18px; line-height: 1.2; margin-bottom: 5px;}
             .the-tu { font-size: 26px; padding: 5px 20px;}
             .dong-ho { width: 50px; height: 50px; line-height: 45px; font-size: 30px; margin: 5px auto;}
-            .ngoi-nha { width: 100px; }
+            
+            /* Điều chỉnh nhà và chữ cho màn hình nhỏ */
+            .ngoi-nha { flex-direction: column; gap: 5px; } /* Đưa chữ xuống dưới ảnh nhà để tiết kiệm diện tích */
+            .ngoi-nha img { width: 80px; }
             .ngoi-nha span { font-size: 45px; }
+            
             .text-cau5 { font-size: 14px; top: 60%;}
             h1 { font-size: 35px; }
             .btn-control { font-size: 14px; padding: 8px 12px; }
-            
-            /* Căn chỉnh Câu 5 trên điện thoại */
             .question-cau5 { font-size: 45px; }
             .message-cau5 { font-size: 20px; }
         }
@@ -202,7 +226,7 @@
         </div>
             
         <div id="cau1" class="screen">
-            <div class="bai-ve">Có bao nhiêu chữ g<br>Trong 'cái gương'</div>
+            <div class="bai-ve">Có bao nhiêu chữ g<br>Trong từ 'cái gương'</div>
             <img src="guong.png" class="hinh-minh-hoa" alt="Cái gương">
             <div class="dong-ho" id="dh1">15</div>
             <div class="dap-an-container">
@@ -361,7 +385,6 @@
             }
         }
 
-        // HÀM KIỂM TRA ĐÃ ĐƯỢC LÀM SẠCH VÀ SỬA LỖI
         function kiemTra(soCau, laDung, element, chuCai) {
             if (khoaClick) return; 
 
@@ -373,7 +396,6 @@
                 if (element) element.classList.add('hieu-ung-dung');
 
                 if (soCau === 5) {
-                    // Nếu đúng, điền chữ g màu xanh lá
                     document.getElementById('word-cau5').innerHTML = "<span style='color: #32CD32;'>" + chuCai + "</span>à <span style='color: #32CD32;'>" + chuCai + "</span>áy";
                     let msg = document.getElementById('message-cau5');
                     msg.innerHTML = "🌟 Giỏi quá! Gà gáy ò ó o! 🌟";
@@ -407,14 +429,12 @@
                 if (soCau === 5) {
                     if(element) element.classList.add('mo-dan'); 
                     
-                    // Nếu sai, điền tạm chữ đó vào màu đỏ
                     document.getElementById('word-cau5').innerHTML = "<span style='color: red;'>" + chuCai + "</span>à <span style='color: red;'>" + chuCai + "</span>áy"; 
                     
                     let msg = document.getElementById('message-cau5');
                     msg.innerHTML = "❌ Chưa đúng rồi, bé thử lại nhé!";
                     msg.className = "message-cau5 wrong-cau5";
                     
-                    // Sau 1.5 giây thì tự động xóa chữ đỏ, quay lại dấu 3 chấm để bé chọn tiếp
                     setTimeout(() => {
                         if(!khoaClick && msg.innerHTML.includes("❌")) {
                              msg.innerHTML = "";
