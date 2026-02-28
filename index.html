@@ -18,7 +18,35 @@
             background-repeat: no-repeat; 
             background-attachment: fixed; 
             width: 100vw; 
-            height: 100vh; 
+            height: 100vh;
+        }
+.ngoi-nha img {
+    width: 100%;           /* Chiều rộng bằng ô chứa */
+    height: 100%;          /* Chiều cao bằng ô chứa */
+    object-fit: contain;   /* Giữ nguyên tỉ lệ ảnh, không bị méo */
+    border-radius: 10px;   /* Bo góc ảnh cho đẹp */
+    display: block;        /* Loại bỏ khoảng hở thừa dưới ảnh */
+}
+        /* --- SỬA LỖI: Đưa CSS của soundToggle vào đúng vị trí --- */
+        #soundToggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #ff9800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 9999;
+            user-select: none;
+        }
+        #soundToggle.off {
+            background: #ccc;
         }
 
         .overlay {
@@ -32,6 +60,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             padding: 20px;
             box-sizing: border-box;
+            overflow-y: auto; /* Thêm cuộn nếu màn hình quá nhỏ */
         }
 
         /* --- BỐ CỤC MÀN HÌNH CHÍNH TỐI ƯU CHO MÁY TÍNH --- */
@@ -41,7 +70,7 @@
             flex-direction: column; 
             justify-content: center; 
             align-items: center;
-            padding-right: 250px; /* Tăng khoảng trống bên phải để chứa cả nhà và chữ */
+            padding-right: 250px; 
             box-sizing: border-box;
             position: relative; 
         }
@@ -96,36 +125,30 @@
             width: 60px; height: 60px; line-height: 55px; margin: 10px auto;
         }
 
-        /* --- CÁC NGÔI NHÀ ĐÁP ÁN (ĐÃ CHỈNH SỬA ĐỂ CHỮ NẰM KỀ BÊN) --- */
+        /* --- CÁC NGÔI NHÀ ĐÁP ÁN --- */
         .ngoi-nha { 
-            display: flex; /* Dùng Flexbox để xếp ngang ảnh và chữ */
-            align-items: center; /* Căn giữa chữ theo chiều dọc so với nhà */
+            display: flex; 
+            align-items: center; 
             justify-content: flex-start;
-            gap: 20px; /* Khoảng cách giữa hình ngôi nhà và chữ cái */
+            gap: 20px; 
             cursor: pointer; 
             transition: transform 0.3s ease, opacity 0.5s ease; 
         }
         .ngoi-nha:hover { transform: scale(1.1); }
         .ngoi-nha img { 
-            width: 140px; /* Cố định kích thước ảnh ngôi nhà */
+            width: 140px; 
             border-radius: 15px; 
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
         }
         
-        /* ĐÂY LÀ PHẦN CÔ CHỈNH SỬA FONT CHỮ VÀ KÍCH THƯỚC */
         .ngoi-nha span {
-            position: static; /* Gỡ bỏ lớp đè lên ảnh cũ */
+            position: static; 
             transform: none;
-            
-            /* --- CÔ SỬA Ở ĐÂY --- */
-            font-family: 'Comic Sans MS', cursive; /* Đổi font chữ (VD: 'Arial', 'Tahoma') */
-            font-size: 80px; /* Kích thước chữ (càng lớn chữ càng to) */
-            color: #ff4500; /* Màu chữ cái (màu đỏ cam) */
-            /* -------------------- */
-            
+            font-family: 'Comic Sans MS', cursive; 
+            font-size: 80px; 
+            color: #ff4500; 
             font-weight: bold; 
-            text-shadow: 3px 3px 0px white, 5px 5px 10px rgba(0,0,0,0.2); /* Tạo viền trắng và bóng mờ cho chữ dễ đọc */
-          
+            text-shadow: 3px 3px 0px white, 5px 5px 10px rgba(0,0,0,0.2); 
         }
 
         /* --- GIAO DIỆN MỚI CHO CÂU 5 --- */
@@ -143,7 +166,7 @@
         /* --- HIỆU ỨNG THỊ GIÁC --- */
         .hieu-ung-dung {
             transform: scale(1.2) !important;
-            filter: drop-shadow(0 0 20px #32CD32); /* Hiệu ứng sáng viền cho cả nhà và chữ */
+            filter: drop-shadow(0 0 20px #32CD32); 
             z-index: 10;
         }
         .mo-dan { opacity: 0.2; pointer-events: none; transform: scale(0.8) !important; }
@@ -175,31 +198,29 @@
         }
         .btn-control:hover { transform: scale(1.1); background-color: #FFA500; }
 
-        /* --- TỰ ĐỘNG CĂN CHỈNH ĐIỆN THOẠI / IPAD DỌC --- */
-        @media (max-width: 900px) {
+        /* --- TỰ ĐỘNG CĂN CHỈNH ĐIỆN THOẠI / IPAD (Nâng lên 1024px để bao trọn iPad) --- */
+        @media (max-width: 1024px) {
             .screen { padding-right: 0; padding-bottom: 80px; justify-content: flex-start; padding-top: 20px; }
             .dap-an-container { position: relative; right: auto; top: auto; transform: none; flex-direction: row; flex-wrap: wrap; justify-content: center; margin-top: 15px !important; gap: 15px; }
-            .hinh-minh-hoa { width: 90%; height: auto; max-height: 40vh; margin-bottom: 10px; object-fit: contain; }
-            .bai-ve { font-size: 18px; line-height: 1.2; margin-bottom: 5px;}
-            .the-tu { font-size: 26px; padding: 5px 20px;}
+            .hinh-minh-hoa { width: 90%; height: auto; max-height: 35vh; margin-bottom: 10px; object-fit: contain; }
+            .bai-ve { font-size: 20px; line-height: 1.3; margin-bottom: 5px;}
             .dong-ho { width: 50px; height: 50px; line-height: 45px; font-size: 30px; margin: 5px auto;}
             
-            /* Điều chỉnh nhà và chữ cho màn hình nhỏ */
-            .ngoi-nha { flex-direction: column; gap: 5px; } /* Đưa chữ xuống dưới ảnh nhà để tiết kiệm diện tích */
-            .ngoi-nha img { width: 80px; }
-            .ngoi-nha span { font-size: 45px; }
+            .ngoi-nha { flex-direction: column; gap: 5px; }
+            .ngoi-nha img { width: 90px; }
+            .ngoi-nha span { font-size: 35px; }
             
-            .text-cau5 { font-size: 14px; top: 60%;}
-            h1 { font-size: 35px; }
+            h1 { font-size: 35px; margin-bottom: 10px;}
             .btn-control { font-size: 14px; padding: 8px 12px; }
             .question-cau5 { font-size: 45px; }
-            .message-cau5 { font-size: 20px; }
+            .message-cau5 { font-size: 20px; position: relative !important; bottom: auto; }
         }
     </style>
 </head>
 <body>
+    <div id="soundToggle" onclick="toggleSound()">🔊</div>
     <div class="stars-container" id="stars"></div>
-
+    
     <audio id="vekq1" src="vekq1.mp3"></audio>
     <audio id="vekq2" src="vekq2.mp3"></audio>
     <audio id="soundDung" src="clap.mp3"></audio>
@@ -226,7 +247,7 @@
         </div>
             
         <div id="cau1" class="screen">
-            <div class="bai-ve">Có bao nhiêu chữ g<br>Trong từ 'cái gương'</div>
+            <div class="bai-ve">Có bao nhiêu chữ g<br></div>
             <img src="guong.png" class="hinh-minh-hoa" alt="Cái gương">
             <div class="dong-ho" id="dh1">15</div>
             <div class="dap-an-container">
@@ -248,24 +269,24 @@
         </div>
 
         <div id="cau3" class="screen">
-            <div class="bai-ve">Chữ cái nào có cấu tạo gồm một nét cong kín bên trái...<br>và một nét móc dưới ở phía bên phải<br>Trong từ 'nhà ga'</div>
+            <div class="bai-ve">Chữ cái nào có cấu tạo gồm một nét cong kín bên trái...<br>và một nét móc dưới ở phía bên phải<br></div>
             <img src="nha.png" class="hinh-minh-hoa" alt="Nhà ga">
             <div class="dong-ho" id="dh3">15</div>
             <div class="dap-an-container">
-                <div class="ngoi-nha" onclick="kiemTra(3, true, this)"><img src="nha_A.png"><span>g</span></div>
-                <div class="ngoi-nha" onclick="kiemTra(3, false, this)"><img src="nha_B.png"><span>y</span></div>
-                <div class="ngoi-nha" onclick="kiemTra(3, false, this)"><img src="nha_C.png"><span>a</span></div>
+                <div class="ngoi-nha" onclick="kiemTra(3, true, this)"><img src="ag.png"></div>
+                <div class="ngoi-nha" onclick="kiemTra(3, false, this)"><img src="by.png"></div>
+                <div class="ngoi-nha" onclick="kiemTra(3, false, this)"><img src="ca.png"></div>
             </div>
         </div>
 
         <div id="cau4" class="screen">
-            <div class="bai-ve">Chữ nào có nét xiên ngắn bên trái...<br>Thêm nét xiên dài ở phía bên phải<br>Trong từ 'cái ly'</div>
+            <div class="bai-ve">Chữ nào có nét xiên ngắn bên trái...<br>Thêm nét xiên dài ở phía bên phải</div>
             <img src="caily.png" class="hinh-minh-hoa" alt="Cái ly">
             <div class="dong-ho" id="dh4">15</div>
             <div class="dap-an-container">
-                <div class="ngoi-nha" onclick="kiemTra(4, false, this)"><img src="nha_A.png"><span>g</span></div>
-                <div class="ngoi-nha" onclick="kiemTra(4, true, this)"><img src="nha_B.png"><span>y</span></div>
-                <div class="ngoi-nha" onclick="kiemTra(4, false, this)"><img src="nha_C.png"><span>l</span></div>
+                 <div class="ngoi-nha" onclick="kiemTra(4, false, this)"><img src="ag.png"></div>
+                <div class="ngoi-nha" onclick="kiemTra(4, true, this)"><img src="by.png"></div>
+                <div class="ngoi-nha" onclick="kiemTra(4, false, this)"><img src="cl.png"></div>
             </div>
         </div>
 
@@ -277,12 +298,12 @@
             <div class="dong-ho" id="dh5">15</div>
             
             <div class="dap-an-container">
-                <div class="ngoi-nha" onclick="kiemTra(5, false, this, 'y')"><img src="nha_A.png"><span>y</span></div>
-                <div class="ngoi-nha" onclick="kiemTra(5, false, this, 'a')"><img src="nha_B.png"><span>a</span></div>
-                <div class="ngoi-nha" onclick="kiemTra(5, true, this, 'g')"><img src="nha_C.png"><span>g</span></div>
+                 <div class="ngoi-nha" onclick="kiemTra(5, false, this, 'y')"><img src="ay.png"></div>
+                <div class="ngoi-nha" onclick="kiemTra(5, false, this, 'a')"><img src="ba.png"></div>
+                <div class="ngoi-nha" onclick="kiemTra(5, true, this, 'g')"><img src="cg.png"></div>
             </div>
             
-            <div class="message-cau5" id="message-cau5" style="position: absolute; bottom: 5%; width: 100%;"></div>
+            <div class="message-cau5" id="message-cau5"></div>
         </div>
 
         <div id="hoanthanh" class="screen">
@@ -293,28 +314,38 @@
 
     </div>
 
-    <script>
+<script>
         let cauHienTai = 1;
         let thoiGian = 15;
         let dongHoChay;
         let khoaClick = false; 
+        let amThanhBat = true;
 
+        // Hàm này sẽ dừng tất cả mọi âm thanh đang phát để chuẩn bị phát nhạc mới
         function ngatAmThanhVe() {
             let danhSachAudio = ['ve1', 've2', 've3', 've4', 'vekq1', 'vekq2', 'soundDung', 'soundSai', 'soundVoTay'];
             danhSachAudio.forEach(id => {
                 let audio = document.getElementById(id);
-                if (audio) { audio.pause(); audio.currentTime = 0; }
+                if (audio) { 
+                    audio.pause(); 
+                    audio.currentTime = 0; 
+                }
             });
         }
 
         function batDau() {
+            // Mẹo cho iPad/iOS: Bắt buộc load toàn bộ audio ngay khi có thao tác chạm (click) đầu tiên
+            let tatCaAmThanh = document.querySelectorAll('audio');
+            tatCaAmThanh.forEach(audio => audio.load());
+
             document.getElementById('menu').classList.remove('active');
-            chuyenCau(1);
+            cauHienTai = 1;
+            chuyenCau(cauHienTai);
         }
 
         function chuyenCau(soCau) {
             khoaClick = false; 
-            ngatAmThanhVe(); 
+            ngatAmThanhVe(); // Phải dừng nhạc cũ trước khi chuyển câu
             clearInterval(dongHoChay); 
 
             let screens = document.querySelectorAll('.screen');
@@ -332,18 +363,33 @@
                     dongHoHienThi.style.color = "red"; 
                 }
 
+                // --- PHÁT NHẠC CÂU HỎI (ve1, ve2, ve3...) ---
                 let amThanhCau = document.getElementById('ve' + soCau);
-                if (amThanhCau) {
-                    amThanhCau.play().catch(e => console.log("Cần tương tác để phát nhạc"));
-                    amThanhCau.onended = function() { batDauDemNguoc(soCau); };
+                if (amThanhCau && amThanhBat) {
+                    amThanhCau.currentTime = 0; 
+                    let playPromise = amThanhCau.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // Chỉ đếm ngược khi bài hát đã phát XONG
+                            amThanhCau.onended = function() { batDauDemNguoc(soCau); };
+                        }).catch(e => {
+                            console.log("Trình duyệt chặn autoplay:", e);
+                            batDauDemNguoc(soCau); 
+                        });
+                    }
                 } else {
                     batDauDemNguoc(soCau); 
                 }
 
             } else {
+                // Hết câu hỏi -> Màn hình hoàn thành
                 document.getElementById('hoanthanh').classList.add('active');
                 let soundHoanHo = document.getElementById('soundVoTay');
-                if(soundHoanHo) soundHoanHo.play();
+                if(soundHoanHo && amThanhBat) {
+                    soundHoanHo.currentTime = 0;
+                    soundHoanHo.play();
+                }
                 createStars(); 
                 document.getElementById('bang-dieu-khien').style.display = "none"; 
             }
@@ -366,10 +412,26 @@
                     clearInterval(dongHoChay);
                     khoaClick = true; 
                     let soundSai = document.getElementById('soundSai');
-                    if(soundSai) soundSai.play(); 
-                    ngatAmThanhVe(); 
+                    if(soundSai && amThanhBat) {
+                        soundSai.currentTime = 0;
+                        soundSai.play(); 
+                    }
+                    ngatAmThanhVe(); // Hết giờ thì ngắt nhạc câu hỏi
                 }
             }, 1000);
+        }
+
+        function toggleSound(){
+            amThanhBat = !amThanhBat;
+            let btn = document.getElementById("soundToggle");
+            if(amThanhBat){
+                btn.innerHTML = "🔊";
+                btn.classList.remove("off");
+            }else{
+                btn.innerHTML = "🔇";
+                btn.classList.add("off");
+                ngatAmThanhVe(); // Tắt loa thì dừng ngay nhạc đang phát
+            }
         }
 
         function createStars() {
@@ -391,7 +453,7 @@
             if (laDung) {
                 khoaClick = true; 
                 clearInterval(dongHoChay); 
-                ngatAmThanhVe(); 
+                ngatAmThanhVe(); // Ngắt bài nhạc câu hỏi ngay lập tức
                 
                 if (element) element.classList.add('hieu-ung-dung');
 
@@ -410,21 +472,27 @@
                     }
                 });
 
+                // Tiếng vỗ tay
                 let soundDung = document.getElementById('soundDung');
-                if(soundDung) soundDung.play();
+                if(soundDung && amThanhBat) {
+                    soundDung.currentTime = 0;
+                    soundDung.play();
+                }
 
-                if (soCau === 1) {
-                    let amThanhKq1 = document.getElementById('vekq1');
-                    if(amThanhKq1) amThanhKq1.play(); 
-                } 
-                else if (soCau === 2) {
-                    let amThanhKq2 = document.getElementById('vekq2');
-                    if(amThanhKq2) amThanhKq2.play(); 
+                // --- PHÁT NHẠC KẾT QUẢ (vekq1, vekq2...) ---
+                // Tự động tìm ID dựa trên số câu, ví dụ soCau = 1 => ID là 'vekq1'
+                let amThanhKq = document.getElementById('vekq' + soCau);
+                if(amThanhKq && amThanhBat) {
+                    amThanhKq.currentTime = 0;
+                    amThanhKq.play(); 
                 }
 
             } else {
                 let soundSai = document.getElementById('soundSai');
-                if(soundSai) soundSai.play();
+                if(soundSai && amThanhBat) {
+                    soundSai.currentTime = 0;
+                    soundSai.play();
+                }
                 
                 if (soCau === 5) {
                     if(element) element.classList.add('mo-dan'); 
@@ -457,9 +525,11 @@
             document.getElementById('menu').classList.add('active');
         }
 
+        // KHI BẤM CÂU TIẾP -> Tăng số câu lên và chạy tiếp
         function boQuaCau() {
             ngatAmThanhVe(); clearInterval(dongHoChay); resetHieuUng(cauHienTai); 
-            cauHienTai++; chuyenCau(cauHienTai);
+            cauHienTai++; 
+            chuyenCau(cauHienTai); // Gọi lại vòng lặp phát nhạc
         }
 
         function hienDapAn() {
